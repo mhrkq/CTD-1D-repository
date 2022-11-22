@@ -1,4 +1,4 @@
-# CTD-1D-repository
+# CTD-1D-Day Planning
 This project is about day planning.\
 It's for those who need and urgent date plan.\
 Or it could be used when you and your friends wanna hang out.\
