@@ -5,7 +5,7 @@ dict_in = {}   #dictionary which takes key and value
 dict_out = {}  #dictionary to store subdictionary which contains key and value
 
 #read csv file and convert the data into nested dictionary
-with open("CTD planning.csv","r") as f:
+with open("ctd_planning.csv","r") as f:
     ls = f.read().split("\n")
     ls_key = ls[0].split(",")
     for i in range(1,len(ls)):
