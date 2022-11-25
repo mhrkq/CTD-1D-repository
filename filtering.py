@@ -3,7 +3,7 @@ ls_key = []
 ls_value = []
 dict_in = {}
 dict_out = {}
-with open("readme.csv","r") as f:
+with open("ctd_planning.csv","r") as f:
     ls = f.read().split("\n")
     ls_key = ls[0].split(",")
     for i in range(1,len(ls)):
