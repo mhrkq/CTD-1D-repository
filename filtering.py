@@ -13,11 +13,11 @@ with open("ctd_planning.csv","r") as f:
     f.close()
 #print(dict_out)
 
-userpax = input("Enter no. of people: ")
-userOccasion = input("Enter Occasion: ")
-userLocation = input("Enter Location: ")
-usertime = input("Enter time: ")
-userPrice = input("Enter Price: ")
+userpax = input("Enter no. of people (2 - 10): ")
+userOccasion = input("Enter Occasion (Date / Friends): ")
+userLocation = input("Enter Location (North / South / East / West / Sentosa / Home): ")
+usertime = input("Enter time (0.5 - 16): ")
+userPrice = input("Enter Price ($ / $$ / $$$ / $$$$): ")
 
 filterpax = userpax != ""
 filterOccasion = userOccasion != ""
