@@ -15,7 +15,7 @@ with open("ctd_planning.csv","r") as f:
 
 userpax = input("Enter no. of people (2 - 10): ")
 userOccasion = input("Enter Occasion (Date / Friends): ")
-userLocation = input("Enter Location (North / South / East / West / Sentosa / Home): ")
+userLocation = input("Enter Location (North / Central / East / West / Sentosa / Home): ")
 usertime = input("Enter time (0.5 - 16): ")
 userPrice = input("Enter Price ($ / $$ / $$$ / $$$$): ")
 
@@ -24,8 +24,8 @@ filterOccasion = userOccasion != ""
 filterLocation = userLocation != ""
 filtertime = usertime != ""
 filterPrice = userPrice != ""
-    
-dict_show = {}    
+
+dict_show = {}
 
 for i in range(1,len(dict_out)):
     """
