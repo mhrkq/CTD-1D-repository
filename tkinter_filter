@@ -1,0 +1,150 @@
+# Tkinter GUI Interface
+from tkinter import *
+from tkinter import messagebox
+
+# Others
+import time
+
+def filtering(category):
+    global window2
+    window2 = Toplevel(window)
+    window2.title(category.capitalize())
+    if category == 'pax' or category == 'time':
+        if category == 'pax':
+            label_2 = Label(window2, text="Input number between 2 - 10")
+        elif category == 'time':
+            label_2 = Label(window2, text="Input number between 0.5 - 16")
+        entry_2 = Entry(window2, width=10)
+        btn_2 = Button(window2, text="Done", width=10, height=2, command=lambda: filtering2(category, entry_2.get()))
+
+        label_2.grid(row=0, column=0, padx=5, pady=5)
+        entry_2.grid(row=1, column=0, padx=5, pady=5)
+        btn_2.grid(row=2, column=0, padx=5, pady=5)
+    elif category == 'ocassion':
+        label_ocassion2 = Label(window2, text="Choose one")
+        btn_ocassion20 = Button(window2, text="None", width=10, height=2, command=lambda: filtering2(category, ""))
+        btn_ocassion21 = Button(window2, text="Date", width=10, height=2, command=lambda: filtering2(category, btn_ocassion21["text"]))
+        btn_ocassion22 = Button(window2, text="Friends", width=10, height=2, command=lambda: filtering2(category, btn_ocassion22["text"]))
+
+        label_ocassion2.grid(row=0, column=0, padx=5, pady=5)
+        btn_ocassion20.grid(row=1, column=0, padx=5, pady=5)
+        btn_ocassion21.grid(row=2, column=0, padx=5, pady=5)
+        btn_ocassion22.grid(row=3, column=0, padx=5, pady=5)
+    elif category == 'location':
+        label_location2 = Label(window2, text="Choose one")
+        btn_location20 = Button(window2, text="None", width=10, height=2, command=lambda: filtering2(category, ""))
+        btn_location21 = Button(window2, text="Sentosa", width=10, height=2, command=lambda: filtering2(category, btn_location21["text"]))
+        btn_location22 = Button(window2, text="Home", width=10, height=2, command=lambda: filtering2(category, btn_location22["text"]))
+        btn_location23 = Button(window2, text="North", width=10, height=2, command=lambda: filtering2(category, btn_location23["text"]))
+        btn_location24 = Button(window2, text="Central", width=10, height=2, command=lambda: filtering2(category, btn_location24["text"]))
+        btn_location25 = Button(window2, text="East", width=10, height=2, command=lambda: filtering2(category, btn_location25["text"]))
+        btn_location26 = Button(window2, text="West", width=10, height=2, command=lambda: filtering2(category, btn_location26["text"]))
+
+        label_location2.grid(row=0, column=0, padx=5, pady=5)
+        btn_location20.grid(row=0, column=1, padx=5, pady=5)
+        btn_location21.grid(row=1, column=0, padx=5, pady=5)
+        btn_location22.grid(row=1, column=1, padx=5, pady=5)
+        btn_location23.grid(row=2, column=0, padx=5, pady=5)
+        btn_location24.grid(row=2, column=1, padx=5, pady=5)
+        btn_location25.grid(row=3, column=0, padx=5, pady=5)
+        btn_location26.grid(row=3, column=1, padx=5, pady=5)
+    elif category == 'price':
+        label_price2 = Label(window2, text="Choose one")
+        btn_price20 = Button(window2, text="None", width=10, height=2, command=lambda: filtering2(category, ""))
+        btn_price21 = Button(window2, text="$", width=10, height=2, command=lambda: filtering2(category, btn_price21["text"]))
+        btn_price22 = Button(window2, text="$$", width=10, height=2, command=lambda: filtering2(category, btn_price22["text"]))
+        btn_price23 = Button(window2, text="$$$", width=10, height=2, command=lambda: filtering2(category, btn_price23["text"]))
+        btn_price24 = Button(window2, text="$$$$", width=10, height=2, command=lambda: filtering2(category, btn_price24["text"]))
+
+        label_price2.grid(row=0, column=0, padx=5, pady=5)
+        btn_price20.grid(row=0, column=1, padx=5, pady=5)
+        btn_price21.grid(row=1, column=0, padx=5, pady=5)
+        btn_price22.grid(row=1, column=1, padx=5, pady=5)
+        btn_price23.grid(row=2, column=0, padx=5, pady=5)
+        btn_price24.grid(row=2, column=1, padx=5, pady=5)
+
+def filtering2(category, input2):
+    global btn_pax, btn_time, btn_ocassion, btn_location, btn_price
+    print(category,input2)
+    if input2 != "":
+        if category == 'pax' or category == 'time':
+            try:
+                float(input2)
+                if category == 'pax':
+                    if 2 <= float(input2) <= 10:
+                        btn_pax["text"] = "{}\n{}".format(category.capitalize(), input2)
+                    else:
+                        messagebox.showwarning("Warning", "Out of Range, Try Again")
+                        window2.destroy()
+                elif category == 'time':
+                    if 0.5 <= float(input2) <= 16:
+                        btn_time["text"] = "{} in hours\n{}".format(category.capitalize(), input2)
+                    else:
+                        messagebox.showwarning("Warning", "Out of Range, Try Again")
+                        window2.destroy()
+            except:
+                messagebox.showwarning("Warning", "Wrong Input, Try Again")
+                window2.destroy()
+        elif category == 'ocassion':
+            btn_ocassion["text"] = "{}\n{}".format(category.capitalize(), input2)
+        elif category == 'location':
+            btn_location["text"] = "{}\n{}".format(category.capitalize(), input2)
+        elif category == 'price':
+            btn_price["text"] = "{}\n{}".format(category.capitalize(), input2)
+    else:
+        if category == 'pax':
+            btn_pax["text"] = category.capitalize()
+        elif category == 'time':
+            btn_time["text"] = "{} in hours".format(category.capitalize())
+        elif category == 'ocassion':
+            btn_ocassion["text"] = category.capitalize()
+        elif category == 'location':
+            btn_location["text"] = category.capitalize()
+        elif category == 'price':
+            btn_price["text"] = category.capitalize()
+
+    window2.destroy()
+
+def display():
+    global frame2
+
+# Creating Window ############################################################################
+window = Tk()
+window.title('Planning App')
+window.geometry("400x400")
+
+# Create Frame 1: Commands ###################################################################
+frame1 = Frame(window)
+frame1.pack(side=LEFT, anchor=NW)
+
+label_filtering = Label(frame1, text="Filters: ")
+btn_pax = Button(frame1, text="Pax", width=15, height=2, command=lambda: filtering('pax'))
+btn_ocassion = Button(frame1, text="Ocassion", width=15, height=2, command=lambda: filtering('ocassion'))
+btn_location = Button(frame1, text="Location", width=15, height=2, command=lambda: filtering('location'))
+btn_time = Button(frame1, text="Time in hours", width=15, height=2, command=lambda: filtering('time'))
+btn_price = Button(frame1, text="Price", width=15, height=2, command=lambda: filtering('price'))
+
+label_filtering.grid(row=0, column=0, padx=5, pady=5)
+btn_pax.grid(row=1, column=0, padx=5, pady=5)
+btn_ocassion.grid(row=2, column=0, padx=5, pady=5)
+btn_location.grid(row=3, column=0, padx=5, pady=5)
+btn_time.grid(row=4, column=0, padx=5, pady=5)
+btn_price.grid(row=5, column=0, padx=5, pady=5)
+# ############################################################################################
+
+# Create Frame 2: XYZ Graph ##################################################################
+frame2 = Frame(window)
+frame2.pack(side=LEFT, anchor=N)
+
+
+# ############################################################################################
+
+# Create Frame 3: Machine Status #############################################################
+frame3 = Frame(window)
+frame3.pack(side=LEFT, anchor=NE)
+
+
+# ############################################################################################
+
+# Window Loop
+window.mainloop()
