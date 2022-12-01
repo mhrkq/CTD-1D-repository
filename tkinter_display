@@ -5,20 +5,29 @@ from tkinter import messagebox
 # Others
 import time
 
+# Global Variables
 ls = []
 ls_key = []
 ls_value = []
 dict_in = {}
 dict_out = {}
+
+# Open csv file to retrieve data and place all in dictionary
 with open("ctd_planning.csv","r") as f:
     ls = f.read().split("\n")
     ls_key = ls[0].split(",")
+    # Zip the key-value pairs in dict_in for each planning, and combine all inside dict_out
     for i in range(1,len(ls)):
         ls_value = ls[i].split(",")
         dict_in = dict(zip(ls_key,ls_value))
         dict_out[i] = dict_in
     f.close()
 
+
+
+##### Functions Defined ######
+
+# For each filter button clicked, create window2 to display the filtering options
 def filtering(category):
     global window2
     window2 = Toplevel(window)
@@ -27,10 +36,10 @@ def filtering(category):
         if category == 'pax':
             label_2 = Label(window2, text="Input number between 2 - 10")
         elif category == 'time':
-            label_2 = Label(window2, text="Input number between 0.5 - 16") 
+            label_2 = Label(window2, text="Input number between 0.5 - 16")
         entry_2 = Entry(window2, width=10)
         btn_2 = Button(window2, text="Done", width=10, height=2, command=lambda: filtering2(category, entry_2.get()))
-        
+
         label_2.grid(row=0, column=0, padx=5, pady=5)
         entry_2.grid(row=1, column=0, padx=5, pady=5)
         btn_2.grid(row=2, column=0, padx=5, pady=5)
@@ -39,7 +48,7 @@ def filtering(category):
         btn_occasion20 = Button(window2, text="None", width=10, height=2, command=lambda: filtering2(category, ""))
         btn_occasion21 = Button(window2, text="Date", width=10, height=2, command=lambda: filtering2(category, btn_occasion21["text"]))
         btn_occasion22 = Button(window2, text="Friends", width=10, height=2, command=lambda: filtering2(category, btn_occasion22["text"]))
-        
+
         label_occasion2.grid(row=0, column=0, padx=5, pady=5)
         btn_occasion20.grid(row=1, column=0, padx=5, pady=5)
         btn_occasion21.grid(row=2, column=0, padx=5, pady=5)
@@ -53,7 +62,7 @@ def filtering(category):
         btn_location24 = Button(window2, text="Central", width=10, height=2, command=lambda: filtering2(category, btn_location24["text"]))
         btn_location25 = Button(window2, text="East", width=10, height=2, command=lambda: filtering2(category, btn_location25["text"]))
         btn_location26 = Button(window2, text="West", width=10, height=2, command=lambda: filtering2(category, btn_location26["text"]))
-        
+
         label_location2.grid(row=0, column=0, padx=5, pady=5)
         btn_location20.grid(row=0, column=1, padx=5, pady=5)
         btn_location21.grid(row=1, column=0, padx=5, pady=5)
@@ -69,14 +78,19 @@ def filtering(category):
         btn_price22 = Button(window2, text="$$", width=10, height=2, command=lambda: filtering2(category, btn_price22["text"]))
         btn_price23 = Button(window2, text="$$$", width=10, height=2, command=lambda: filtering2(category, btn_price23["text"]))
         btn_price24 = Button(window2, text="$$$$", width=10, height=2, command=lambda: filtering2(category, btn_price24["text"]))
-        
+
         label_price2.grid(row=0, column=0, padx=5, pady=5)
         btn_price20.grid(row=0, column=1, padx=5, pady=5)
         btn_price21.grid(row=1, column=0, padx=5, pady=5)
         btn_price22.grid(row=1, column=1, padx=5, pady=5)
         btn_price23.grid(row=2, column=0, padx=5, pady=5)
         btn_price24.grid(row=2, column=1, padx=5, pady=5)
+    elif category == 'clear':
+        filtering2(category, "")
 
+# After inputing a valid input for filtering, change the filter buttons names according to the filtered option chosen
+# If no input was entered, leave it as empty string
+# Destroys the window afterwards
 def filtering2(category, input2):
     global btn_pax, btn_time, btn_occasion, btn_location, btn_price
     if input2 != "":
@@ -115,30 +129,52 @@ def filtering2(category, input2):
             btn_location["text"] = category.capitalize()
         elif category == 'price':
             btn_price["text"] = category.capitalize()
-    
+        if category == 'clear':
+            btn_pax["text"] = "Pax"
+            btn_time["text"] = "Time in hours"
+            btn_occasion["text"] = "Occasion"
+            btn_location["text"] = "Location"
+            btn_price["text"] = "Price"
+
     window2.destroy()
     display()
-    
+
+# Create frame_display which is destroyable for updating the informations to display
+# Display all the information as individual buttons after filtering
 def display():
     global frame2, frame_display, btn_pax, btn_time, btn_occasion, btn_location, btn_price
     frame_display.destroy()
     frame_display = Frame(frame2, background="green")
     frame_display.pack()
+    """
     label_display = Label(frame_display, text="Places TO GO")
     label_display.grid(row=0, column=0, columnspan=5, padx=5, pady=5)
-    
+    """
+
+    canvas = Canvas(frame_display, background="green", width=625, height=500)
+    #canvas.grid(row=0, column=0, padx=5, pady=5)
+    vsb = Scrollbar(frame_display, orient="vertical", command=canvas.yview)
+    hsb = Scrollbar(frame_display, orient="horizontal", command=canvas.xview)
+
+    frame_display.grid_rowconfigure(0, weight=1)
+    frame_display.grid_columnconfigure(0, weight=1)
+    canvas.configure(xscrollcommand=hsb.set, yscrollcommand=vsb.set)
+    canvas.grid(row=0, column=0, sticky="nsew")
+    vsb.grid(row=0, column=1, sticky="ns")
+    hsb.grid(row=1, column=0, sticky="ew")
+
     userpax = btn_pax["text"].replace("Pax","").replace("\n","")
     userOccasion = btn_occasion["text"].replace("Occasion","").replace("\n","")
     userLocation = btn_location["text"].replace("Location","").replace("\n","")
     usertime = btn_time["text"].replace("Time in hours","").replace("\n","")
     userPrice = btn_price["text"].replace("Price","").replace("\n","")
-    
+
     filterpax = userpax != ""
     filterOccasion = userOccasion != ""
     filterLocation = userLocation != ""
     filtertime = usertime != ""
     filterPrice = userPrice != ""
-    
+
     dict_show = {}
     for i in range(1,len(dict_out)):
         appendd = True
@@ -169,23 +205,30 @@ def display():
                 appendd = False
         if appendd:
             dict_show[i] = dict_out[i]
-    
-    i = 1
-    j = 0
+
+    i = 0
+    j = 25
     dict_btn = {}
+    label_display = Label(frame_display, text="Places TO GO")
+    canvas.create_window(275, 0, anchor="nw", window=label_display)
+
     for key in dict_show:
         def func(x=key):
             return display2(x)
+        """
         dict_btn[key] = Button(frame_display, text=dict_show[key]['Title'], width=15, height=2, command=func)
         dict_btn[key].grid(row=i, column=j, padx=5, pady=5)
-        
-        #btn_display = Button(frame_display, text=dict_show[key]['Title'], width=15, height=2, command=lambda: display2(btn_display['text']))
-        #btn_display.grid(row=i, column=j, padx=5, pady=5)
-        j+=1
-        if j>=5:
-            j = 0
-            i+=1
-    
+        """
+        dict_btn[key] = Button(canvas, text=dict_show[key]['Title'], width=15, height=2, command=func)
+        canvas.create_window(i, j, anchor="nw", window=dict_btn[key])
+        i+=125
+        if i>=600:
+            i = 0
+            j+=50
+
+    canvas.bind("<Configure>", lambda event: canvas.configure(scrollregion=canvas.bbox("all")))
+
+# Display more information about the planning
 def display2(key):
     window3 = Toplevel(window)
     window3.title(dict_out[key]['Title'])
@@ -195,7 +238,7 @@ def display2(key):
     label_33 = Label(window3, text=dict_out[key]['Location'])
     label_34 = Label(window3, text=dict_out[key]['time_min'] + " - " + dict_out[key]['time_max'] + " hrs")
     label_35 = Label(window3, text=dict_out[key]['Price'])
-    
+
     label_30.grid(row=0, column=0, padx=5, pady=5)
     label_31.grid(row=1, column=0, padx=5, pady=5)
     label_32.grid(row=2, column=0, padx=5, pady=5)
@@ -203,12 +246,16 @@ def display2(key):
     label_34.grid(row=4, column=0, padx=5, pady=5)
     label_35.grid(row=5, column=0, padx=5, pady=5)
 
+
+
+##### App Design #####
+
 # Creating Window ############################################################################
 window = Tk()
 window.title('AI Stead Mai')
-window.geometry("400x400")
+window.geometry("800x400")
 
-# Create Frame 1: Commands ###################################################################
+# Create Frame 1: Filter Buttons #############################################################
 frame1 = Frame(window, background="red")
 frame1.pack(side=LEFT, anchor=NW)
 
@@ -218,6 +265,7 @@ btn_occasion = Button(frame1, text="Occasion", width=15, height=2, command=lambd
 btn_location = Button(frame1, text="Location", width=15, height=2, command=lambda: filtering('location'))
 btn_time = Button(frame1, text="Time in hours", width=15, height=2, command=lambda: filtering('time'))
 btn_price = Button(frame1, text="Price", width=15, height=2, command=lambda: filtering('price'))
+btn_clear = Button(frame1, text="CLEAR FILTER", width=15, height=2, command=lambda: filtering('clear'))
 
 label_filtering.grid(row=0, column=0, padx=5, pady=5)
 btn_pax.grid(row=1, column=0, padx=5, pady=5)
@@ -225,9 +273,11 @@ btn_occasion.grid(row=2, column=0, padx=5, pady=5)
 btn_location.grid(row=3, column=0, padx=5, pady=5)
 btn_time.grid(row=4, column=0, padx=5, pady=5)
 btn_price.grid(row=5, column=0, padx=5, pady=5)
+btn_clear.grid(row=6, column=0, padx=5, pady=5)
+
 # ############################################################################################
 
-# Create Frame 2: XYZ Graph ##################################################################
+# Create Frame 2: Display Planning ###########################################################
 frame2 = Frame(window)
 frame2.pack(side=LEFT, anchor=N)
 frame_display = Frame(frame2)
