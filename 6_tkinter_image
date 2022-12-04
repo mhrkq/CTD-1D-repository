@@ -186,7 +186,7 @@ def display():
     for i in range(1,len(dict_out)):
         appendd = True
         if filterpax:
-            if float(userpax) <= float(dict_out[i]['pax_min']) or float(userpax) >= float(dict_out[i]['pax_max']):
+            if float(userpax) < float(dict_out[i]['pax_min']) or float(userpax) > float(dict_out[i]['pax_max']):
                 appendd = False
         if filterOccasion:
             if userOccasion not in dict_out[i]['Occasion']:
@@ -195,7 +195,7 @@ def display():
             if userLocation not in dict_out[i]['Location']:
                 appendd = False
         if filtertime:
-            if float(usertime) <= float(dict_out[i]['time_min']) or float(usertime) >= float(dict_out[i]['time_max']):
+            if float(usertime) < float(dict_out[i]['time_min']) or float(usertime) > float(dict_out[i]['time_max']):
                 appendd = False
         if filterPrice:
             if userPrice != dict_out[i]['Price']:
