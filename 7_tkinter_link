@@ -321,7 +321,7 @@ def reload():
     c = randomcolor()
     frame1["bg"] = c
     canvas["bg"] = c
-    window.after(10000, reload)
+    window.after(5000, reload)
 
 
 
